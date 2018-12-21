@@ -33,8 +33,9 @@ public class Scanner
         }
 
         // print the token list to file
+        //System.out.println(data);
         Token_Type.Print_List_Token_Type(List_of_Tokens );
-        System.out.println("done ");
+        System.out.println("output file is created ");
     }
     public static String readFileAsString(String fileName)throws Exception
     {
@@ -87,6 +88,21 @@ public class Scanner
         {
             if(location<data.length())
                 ch=data.charAt(location);
+            else if(location==data.length()&&token!="")
+            {
+                if(currentState==State.INID)
+                {
+                    if(isReserved(token))
+                        List_of_Tokens.add(new Token_Type("Reserved Word",token));
+                    else
+                        List_of_Tokens.add(new Token_Type("identifier",token));
+                }
+                else if(currentState==State.INNUM)
+                {
+                    List_of_Tokens.add(new Token_Type("number",token));
+                }
+                break;
+            }
             else
                 break;
             switch (currentState)
@@ -105,7 +121,7 @@ public class Scanner
                             currentState=State.DONE;
                             token=String.valueOf(ch);
 
-                            List_of_Tokens.add(new Token_Type("Symbol",String.valueOf(ch)));
+                            List_of_Tokens.add(new Token_Type("special Symbol",String.valueOf(ch)));
                         }
 
                     }
@@ -143,6 +159,14 @@ public class Scanner
                     {
                         currentState=State.INID;
                         token+=String.valueOf(ch);
+                        /*
+                        if(location==data.length()-1)
+                        {
+                            if(isReserved(token))
+                                List_of_Tokens.add(new Token_Type("Reserved Word",token));
+                            else
+                                List_of_Tokens.add(new Token_Type("identifier",token));
+                        }*/
                     }
                     else
                     {
@@ -160,7 +184,7 @@ public class Scanner
                         currentState=State.DONE;
                         //location--;
                         token=":=";
-                        List_of_Tokens.add(new Token_Type("symbol",token));
+                        List_of_Tokens.add(new Token_Type("special symbol",token));
                     }
                     else
                     {

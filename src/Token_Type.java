@@ -29,8 +29,7 @@ public class Token_Type
         FileWriter fw = new FileWriter(newTextFile);
 
 
-        while (itr.hasNext())
-        {
+        do {
             //  moving cursor to next element
             Token_Type i = (Token_Type) itr.next();
 
@@ -42,6 +41,7 @@ public class Token_Type
             String str =  i.Type_Equivalent + ','+i.Type  + "\n";
             fw.write(str);
         }
+        while (itr.hasNext());
 
         fw.close();
         return ;
